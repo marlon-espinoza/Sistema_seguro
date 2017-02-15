@@ -34,7 +34,7 @@ class Pelicula(models.Model):
 	descripcion = models.CharField(max_length=30)
 	estrella = models.DecimalField(max_digits=5,decimal_places=0)
 	url = models.CharField(max_length=125)
-	imagen = models.CharField(max_length=125)
+	imagen = models.CharField(max_length=125,null=True,blank=True)
 	vistas = models.DecimalField(max_digits=20,decimal_places=0)
 	usuario = models.ForeignKey(Usuario)
 
