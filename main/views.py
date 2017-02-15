@@ -51,3 +51,21 @@ def loginAdmin(request):
 		except Exception as e:
 			print e
 			return HttpResponse(0)
+
+def registrarUsuario(request):
+	if request.method == 'POST':
+		try:
+			usuario = request.POST.get("username")
+			nombre = request.POST.get("nombre")
+			apellido = request.POST.get("apellido")
+			password = request.POST.get("password")
+			password2 = request.POST.get("confirm-password")
+			if password==password2:
+				usuario = Usuario(usuario=usuario,nombre=nombre,apellido=apellido,password=password)
+				usuario.save()
+				return HttpResponse(1)
+			else: 
+				return HttpResponse("Password no coincide")
+		except Exception as e:
+			print e
+			return HttpResponse(0)

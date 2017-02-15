@@ -7,4 +7,5 @@ urlpatterns = [
    	url(r'^usuario/$', main.views.Usuarios.as_view(),name="usuario"),
    	url(r'^login_usuario/$', main.views.loginUsuario,name="login_usuario"),
    	url(r'^login_admin/$', main.views.loginAdmin,name="login_admin"),
+   	url(r'^registro_usuario/$', main.views.registrarUsuario,name="registro_usuario"),
   	]
