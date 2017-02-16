@@ -31,7 +31,7 @@
       <nav class="fixed top right while-text main-navigation" id="navigation">
         <ul class="navbar-text list-inline">
           <li>
-            <a>Salir de sesion</a>
+            <a href="{% url 'log_out'%}">Salir de sesion</a>
           </li>
           <li>
             <a>Buscar</a>
@@ -79,4 +79,9 @@
         </div>
 
 
+{% endblock %}
+{% block js %}
+<script type="text/javascript">
+
+</script>
 {% endblock %}

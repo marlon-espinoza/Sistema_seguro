@@ -2,6 +2,9 @@ from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.http import HttpResponse
 from .models import *
+from django.http import HttpResponseForbidden
+from django.shortcuts import redirect
+from django.contrib.auth import logout
 # Create your views here.
 
 class Index(TemplateView):
@@ -14,26 +17,51 @@ class Index(TemplateView):
 class Administradores(TemplateView):
 	template_name = 'administrador.html'
 	def get_context_data(self, **kwargs):
-		context = super(Administradores, self).get_context_data(**kwargs)
-		print "Entra aqui!!"
-		return context
+		print self.request.session
+		if self.request.session.has_key('admin'):
+			username = self.request.session['admin']
+			try:
+				admin = Administrador.objects.get(usuario=username)
+				context = super(Administradores, self).get_context_data(**kwargs)
+				return context
+			except Exception as e:
+				return HttpResponseForbidden()
+		else:
+			return HttpResponseForbidden()
 
 class Usuarios(TemplateView):
 	template_name = 'usuario.html'
 	def get_context_data(self, **kwargs):
-		context = super(Usuarios, self).get_context_data(**kwargs)
-		print "Entra aqui!!"
-		return context
+		print self.request.session
+		if self.request.session.has_key('usuario'):
+			username = self.request.session['usuario']
+			try:
+				usuario = Usuario.objects.get(usuario=username)
+				context = super(Usuarios, self).get_context_data(**kwargs)
+				print "Entra aqui!!"
+				return context
+			except Exception as e:
+				return HttpResponseForbidden()
+		else:
+			return HttpResponseForbidden()
+		
+
+
+def logout(request):
+	for key in request.session.keys():
+		del request.session[key]
+	
+	return redirect('index')
+
 
 def loginUsuario(request):
 	if request.method == 'POST':
 		try:
-			usuario = request.POST.get("username")
-			print usuario
+			username = request.POST.get("username")
 			password = request.POST.get("password")
-			print password
-			usuario = Usuario.objects.get(usuario=usuario,password=password)
+			usuario = Usuario.objects.get(usuario=username,password=password)
 			print usuario
+			request.session['usuario'] = username
 			return HttpResponse(1)
 		except Exception as e:
 			print e
@@ -41,12 +69,11 @@ def loginUsuario(request):
 def loginAdmin(request):
 	if request.method == 'POST':
 		try:
-			usuario = request.POST.get("username")
-			print usuario
+			username = request.POST.get("username")
 			password = request.POST.get("password")
-			print password
-			usuario = Administrador.objects.get(usuario=usuario,password=password)
+			usuario = Administrador.objects.get(usuario=username,password=password)
 			print usuario
+			request.session['admin'] = username
 			return HttpResponse(1)
 		except Exception as e:
 			print e

@@ -261,8 +261,14 @@
                       processData: false
                   })
                       .done(function(res){
-                        alert(res);
-                        window.location.href = "{% url 'usuario' %}";
+                        
+                        if(res==1){
+                            alert("Usuario autorizado");
+                            window.location.href = "{% url 'usuario' %}";
+                        }
+                        else{
+                            alert("Datos incorrectos");
+                        }
                         
                       });
               });
@@ -280,8 +286,13 @@
                       processData: false
                   })
                       .done(function(res){
-                        alert(res);
-                        window.location.href = "{% url 'administrador' %}";
+                        if(res==1){
+                            alert("Administrador autorizado");
+                            window.location.href = "{% url 'administrador' %}";
+                        }
+                        else{
+                            alert("Datos incorrectos");
+                        }
                         
                       });
               });
@@ -299,8 +310,9 @@
                       processData: false
                   })
                       .done(function(res){
-                        alert(res);
-                        if(res==1)window.location.href = "{% url 'usuario' %}";
+                        
+                        if(res==1)alert("Usuario registrado");
+                        else alert("No se pudo registrar, revise sus datos");
                         
                       });
               });
